@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Backend for Second-Shelf using Node, Express, MongoDB native driver, and Passport",
+  "description": "Backend for Second-Shelf using Node, Express, MongoDB, and Passport",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -19,7 +19,7 @@
     "books",
     "reviews"
   ],
-  "author": "Allison Avery, David Ahn",
+  "author": "Alison Avery, David Ahn",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^6.0.0",

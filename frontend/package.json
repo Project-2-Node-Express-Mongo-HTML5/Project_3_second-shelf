@@ -2,6 +2,8 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
+  "description": "Frontend for Second-Shelf using React",
+
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "author": "Alison Avery, David Ahn",
+  "license": "MIT",
   "dependencies": {
     "bootstrap": "^5.3.8",
     "react": "^19.2.0",
