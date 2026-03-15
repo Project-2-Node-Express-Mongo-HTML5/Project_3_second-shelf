@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // components/Header/Header.jsx
 // Site-wide navigation bar, rendered on every page via App.jsx.
 // Displays the site logo, nav links, and auth controls.
@@ -61,11 +62,58 @@ export default function Header({ user, setUser }) {
       {showLogin && (
         <LoginForm setUser={setUser} onClose={() => setShowLogin(false)} />
       )}
+=======
+import PropTypes from "prop-types";
+import { Link } from "react-router";
+import "./Header.css";
+
+function Header({ user, onLogout }) {
+  return (
+    <header className="site-header">
+      <nav className="navbar">
+        <div className="navbar-brand">
+          <Link to="/">Second-Shelf</Link>
+        </div>
+
+        <div className="navbar-links">
+          <Link to="/">Home</Link>
+
+          {user ? (
+            <>
+              <span className="welcome-text">Hi, {user.name}</span>
+              <button type="button" onClick={onLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
+            </>
+          )}
+        </div>
+      </nav>
+>>>>>>> 8804c2469e0ac0d2b96aa06e113be1717223d4fd
     </header>
   );
 }
 
 Header.propTypes = {
+<<<<<<< HEAD
   user: PropTypes.shape({ username: PropTypes.string, id: PropTypes.string }),
   setUser: PropTypes.func.isRequired,
 };
+=======
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+  }),
+  onLogout: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  user: null,
+};
+
+export default Header;
+>>>>>>> 8804c2469e0ac0d2b96aa06e113be1717223d4fd
