@@ -14,7 +14,7 @@ const dummyBooks = [
     _id: "2",
     title: "1984",
     author: "George Orwell",
-    price: 6.5,
+    price: 6.50,
     condition: "Fair",
   },
   {
