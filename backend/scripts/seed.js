@@ -81,6 +81,8 @@ async function seed() {
   }));
   const { insertedIds } = await db.collection("books").insertMany(books);
 
+  console.log("seeded 1000 books and 5 users");
+  await client.close();
 }
 
 seed().catch((e) => {

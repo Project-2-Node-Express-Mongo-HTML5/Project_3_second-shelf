@@ -1,5 +1,31 @@
+<<<<<<< HEAD
+/* BookList.css
+   Styles for the book catalog grid and its status messages.
+   Uses CSS Grid with auto-fill columns so the layout adapts
+   to any screen width without explicit breakpoints. */
+
+/* Responsive grid — columns are at least 220px wide and grow to fill available space */
+.booklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Shared style for loading, error, and empty-state messages */
+.booklist__status {
+  text-align: center;
+  color: #666;
+  margin-top: 2rem;
+  font-size: 1rem;
+}
+
+/* Error variant — red text to draw attention to the failure */
+.booklist__status--error {
+  color: #c0392b;
+=======
 .book-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5rem;
+>>>>>>> 8804c2469e0ac0d2b96aa06e113be1717223d4fd
 }
