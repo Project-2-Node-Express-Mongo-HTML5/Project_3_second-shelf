@@ -1,19 +1,32 @@
 // pages/BookDetails/BookDetails.jsx
 // Detail page for a single book listing, accessed via /books/:id.
-// Fetches the book and its reviews in parallel on mount.
-// Shows full listing info (title, author, price, condition, description),
-// an average rating derived from reviews, and the full ReviewList.
-// If the logged-in user is the seller, Edit and Delete controls are shown.
-// If the logged-in user is not the seller, a ReviewForm is shown below the reviews.
+// Fetches the book and its reviews independently - if the reviews module is
+// unavailable the book detail page still loads correctly
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { fetchBook, deleteBook } from "../../api/books.js";
-import { fetchReviews, createReview, deleteReview } from "../../api/reviews.js";
 import ReviewList from "../../components/ReviewList/ReviewList.jsx";
 import ReviewForm from "../../components/ReviewForm/ReviewForm.jsx";
 import "./BookDetails.css";
+
+//Attempt to load the review API - if the module doesn't exist or
+// the endpoint is down, reviewsAvailable will be false and the
+// reviews section degrades gracefully instead of crashing the page.
+
+let fetchReviews, createReview, deleteReview;
+let reviewsAvailable = false;
+
+try {
+  const reviewsApi = await import("../../api/reviews.js");
+  fetchReviews = reviewsApi.fetchReviews;
+  createReview = reviewsApi.createReview;
+  deleteReview = reviewsApi.deleteReview;
+  reviewsAvailable = true;
+} catch {
+  reviewsAvailable = false;
+}
 
 /**
  * BookDetails page — full view of a single book listing with reviews.
@@ -27,20 +40,27 @@ export default function BookDetails({ user }) {
 
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
-  // True while both the book and reviews fetches are in progress
+  // True while the book fetch is in progress
   const [loading, setLoading] = useState(true);
-  // Holds an error message string if either fetch fails
+  // Holds an error message string if book fetch fails
   const [error, setError] = useState("");
+  // True if the reviews fetch failed at runtime (API down, not missing module)
+  const [reviewsError, setReviewsError] = useState(false);
 
   // Fetch the book and its reviews in parallel when the id changes
   useEffect(() => {
-    Promise.all([fetchBook(id), fetchReviews(id)])
-      .then(([b, r]) => {
-        setBook(b);
-        setReviews(r);
-      })
+    // Always fetch the book — this module's core responsibility
+    fetchBook(id)
+      .then((b) => setBook(b))
       .catch(() => setError("Failed to load book details."))
       .finally(() => setLoading(false));
+
+    // Fetch reviews separately — failure here does not affect the book load
+    if (reviewsAvailable) {
+      fetchReviews(id)
+        .then((r) => setReviews(r))
+        .catch(() => setReviewsError(true));
+    }
   }, [id]);
 
   /**
@@ -55,7 +75,8 @@ export default function BookDetails({ user }) {
 
   /**
    * Submits a new review for this book, then optimistically
-   * appends it to local state without refetching from the API.
+   * appends it to local state.
+   * Only called when reviewsAvailable is true
    * @param {Object} data - { rating, body } from ReviewForm
    */
   async function handleReviewSubmit(data) {
@@ -68,6 +89,7 @@ export default function BookDetails({ user }) {
 
   /**
    * Deletes a review by id and removes it from local state.
+   * Only called when reviewsAvailable is true.
    * @param {string} reviewId - The _id of the review to delete
    */
   async function handleReviewDelete(reviewId) {
@@ -86,7 +108,7 @@ export default function BookDetails({ user }) {
   // True if the logged-in user is the seller — controls edit/delete visibility
   const isOwner = user && user.username === book.sellerId;
 
-  // Calculate the average rating from all reviews; null if there are no reviews yet
+  // Average rating is only calculated when reviews loaded successfully
   const avgRating = reviews.length
     ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
     : null;
@@ -113,6 +135,7 @@ export default function BookDetails({ user }) {
             >
               {book.condition}
             </span>
+            {/*only show average rating if reviews loaded successfully */}
             {avgRating && (
               <span className="bookdetails__rating">
                 ★ {avgRating} ({reviews.length})
@@ -145,31 +168,42 @@ export default function BookDetails({ user }) {
         </div>
       </div>
 
-      {/* Reviews section — list of existing reviews and the submission form */}
-      <section className="bookdetails__reviews">
-        <h2 className="bookdetails__reviews-heading">
-          Community Reviews {reviews.length > 0 && `(${reviews.length})`}
-        </h2>
+      {/* Reviews section — hidden entirely if the reviews module is unavailable */}
+      {reviewsAvailable ? (
+        <section className="bookdetails__reviews">
+          <h2 className="bookdetails__reviews-heading">
+            Community Reviews {reviews.length > 0 && `(${reviews.length})`}
+          </h2>
 
-        {/* Pass the user down so ReviewList can show delete buttons on owned reviews */}
-        <ReviewList
-          reviews={reviews}
-          user={user}
-          onDelete={handleReviewDelete}
-        />
-
-        {/* Show the review form only to logged-in users; otherwise prompt to log in */}
-        {user ? (
-          <ReviewForm onSubmit={handleReviewSubmit} />
-        ) : (
-          <p className="bookdetails__login-prompt">
-            <button className="bookdetails__login-link" onClick={() => {}}>
-              Log in
-            </button>{" "}
-            to leave a review.
-          </p>
-        )}
-      </section>
+          {reviewsError ? (
+            // Graceful fallback if the reviews API is down at runtime
+            <p className="bookdetails__status">
+              Reviews unavailable right now.
+            </p>
+          ) : (
+            <>
+              <ReviewList
+                reviews={reviews}
+                user={user}
+                onDelete={handleReviewDelete}
+              />
+              {user ? (
+                <ReviewForm onSubmit={handleReviewSubmit} />
+              ) : (
+                <p className="bookdetails__login-prompt">
+                  <button
+                    className="bookdetails__login-link"
+                    onClick={() => {}}
+                  >
+                    Log in
+                  </button>{" "}
+                  to leave a review.
+                </p>
+              )}
+            </>
+          )}
+        </section>
+      ) : null}
     </div>
   );
 }
