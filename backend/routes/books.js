@@ -52,7 +52,7 @@ router.post("/", requireAuth, async (req, res) => {
   if (err) return res.status(400).json({ error: err });
   const result = await createBook({
     ...req.body,
-    sellerId: req.user._id.toString(),
+    sellerId: req.user.id.toString(),
   });
   res.status(201).json({ insertedId: result.insertedId });
 });
@@ -68,7 +68,7 @@ router.post("/", requireAuth, async (req, res) => {
 router.put("/:id", requireAuth, async (req, res) => {
   const book = await getBookById(req.params.id);
   if (!book) return res.status(404).json({ error: "Book not found" });
-  if (book.sellerId !== req.user._id.toString())
+  if (book.sellerId !== req.user.id.toString())
     return res.status(403).json({ error: "Forbidden" });
   await updateBook(req.params.id, req.body);
   res.json({ message: "Book updated" });
@@ -85,7 +85,7 @@ router.put("/:id", requireAuth, async (req, res) => {
 router.delete("/:id", requireAuth, async (req, res) => {
   const book = await getBookById(req.params.id);
   if (!book) return res.status(404).json({ error: "Book not found" });
-  if (book.sellerId !== req.user._id.toString())
+  if (book.sellerId !== req.user.id.toString())
     return res.status(403).json({ error: "Forbidden" });
   await deleteBook(req.params.id);
   res.json({ message: "Book deleted" });

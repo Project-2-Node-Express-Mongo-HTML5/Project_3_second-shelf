@@ -7,8 +7,8 @@ import dotenv from "dotenv";
 import passport from "./config/passport.js";
 import { connectToMongo } from "./config/mongo.js";
 import authRoutes from "./routes/auth.js";
-// import booksRoutes from "./routes/books.js";
-// import reviewsRoutes from "./routes/reviews.js";
+import booksRoutes from "./routes/books.js";
+import reviewsRoutes from "./routes/reviews.js";
 
 dotenv.config();
 
@@ -43,8 +43,8 @@ app.use(passport.session());
 
 // API routes
 app.use("/api/auth", authRoutes);
-// app.use("/api/books", booksRoutes);
-// app.use("/api/reviews", reviewsRoutes);
+app.use("/api/books", booksRoutes);
+app.use("/api/reviews", reviewsRoutes);
 
 // Optional health check
 app.get("/api", (_req, res) => {
@@ -81,7 +81,7 @@ async function startServer() {
 
 startServer();
 
-////temp with mongodb////
+////temp without mongodb////
 // app.listen(PORT, () => {
 //   console.log(`Server is running on port ${PORT}`);
 // });

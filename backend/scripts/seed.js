@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { MongoClient } from "mongodb";
+import bcrypt from "bcrypt";
 
 const TITLES = [
   "The Great Gatsby",
@@ -18,6 +19,7 @@ const TITLES = [
   "The Road",
   "No Country for Old Men",
 ];
+
 const AUTHORS = [
   "F. Scott Fitzgerald",
   "George Orwell",
@@ -34,13 +36,15 @@ const AUTHORS = [
   "William Gibson",
   "Cormac McCarthy",
 ];
+
 const CONDITIONS = ["Like New", "Good", "Fair", "Poor"];
-const USERNAMES = [
-  "emma_reads",
-  "marcus_collects",
-  "bookworm99",
-  "pageturner",
-  "literarylife",
+
+const USERS = [
+  { name: "Emma", email: "emma@example.com" },
+  { name: "Marcus", email: "marcus@example.com" },
+  { name: "Nina", email: "nina@example.com" },
+  { name: "Allison", email: "allison@example.com" },
+  { name: "David", email: "david@example.com" },
 ];
 
 function rand(arr) {
@@ -54,21 +58,24 @@ function randFloat(min, max) {
 async function seed() {
   const client = new MongoClient(process.env.MONGO_URI);
   await client.connect();
-  const db = client.db();
+
+  const db = client.db(process.env.MONGO_DB_NAME || "second_shelf");
 
   await db.collection("books").deleteMany({});
-
   await db.collection("users").deleteMany({});
 
-  // Seed users
-  const users = USERNAMES.map((u) => ({
-    username: u,
-    password: "password123",
+  const passwordHash = await bcrypt.hash("password123", 10);
+
+  const users = USERS.map((user) => ({
+    name: user.name,
+    email: user.email,
+    passwordHash,
     createdAt: new Date(),
   }));
-  await db.collection("users").insertMany(users);
 
-  // Seed 1000 books
+  const userInsertResult = await db.collection("users").insertMany(users);
+  const insertedUserIds = Object.values(userInsertResult.insertedIds);
+
   const books = Array.from({ length: 1000 }, (_, i) => ({
     title: `${rand(TITLES)} (Vol. ${(i % 10) + 1})`,
     author: rand(AUTHORS),
@@ -76,11 +83,14 @@ async function seed() {
     condition: rand(CONDITIONS),
     description: `A well-loved copy in ${rand(CONDITIONS).toLowerCase()} condition. A great addition to any collection.`,
     available: Math.random() > 0.1,
-    sellerId: rand(USERNAMES),
+    sellerId: rand(insertedUserIds).toString(),
     createdAt: new Date(),
   }));
-  const { insertedIds } = await db.collection("books").insertMany(books);
 
+  await db.collection("books").insertMany(books);
+
+  console.log("Seed complete");
+  await client.close();
 }
 
 seed().catch((e) => {

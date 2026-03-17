@@ -1,4 +1,4 @@
-export const isAuthenticated = (req, res, next) => {
+export const requireAuth = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }

@@ -11,76 +11,89 @@ David Ahn, Alison Avery
 ## Demo
 
 ```
-second-shelf/
-  backend/
-    config/
-      mongo.js
-      passport.js
-    data/
-      books.js
-      reviews.js
-      users.js
-    middleware/
-      auth.js
-    routes/
-      auth.js
-      books.js
-      reviews.js
-    scripts/
-      seed.js
-    utils/
-      validation.js
-    .env.example
-    eslint.config.js
-    package.json
-    server.js
-  frontend/
-    public/
-    src/
-      api/
-        books.js
-        reviews.js
-        auth.js
-      components/
-        BookCard/
-          BookCard.jsx
-          BookCard.css
-        BookForm/
-          BookForm.jsx
-          BookForm.css
-        BookList/
-          BookList.jsx
-          BookList.css
-        Header/
-          Header.jsx
-          Header.css
-        LoginForm/
-          LoginForm.jsx
-          LoginForm.css
-        ReviewForm/
-          ReviewForm.jsx
-          ReviewForm.css
-        ReviewList/
-          ReviewList.jsx
-          ReviewList.css
-      pages/
-        Home/
-          Home.jsx
-          Home.css
-        BookDetails/
-          BookDetails.jsx
-          BookDetails.css
-        AddBook/
-          AddBook.jsx
-          AddBook.css
-      App.jsx
-      App.css
-      main.jsx
-    eslint.config.js
-    package.json
-  .gitignore
-  .prettierrc
-  LICENSE
-  README.md
-  ``'
+├── LICENSE
+├── README.md
+├── backend
+│   ├── config
+│   │   ├── mongo.js
+│   │   └── passport.js
+│   ├── data
+│   │   ├── books.js
+│   │   ├── reviews.js
+│   │   └── users.js
+│   ├── eslint.config.js
+│   ├── middleware
+│   │   └── auth.js
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── routes
+│   │   ├── auth.js
+│   │   ├── books.js
+│   │   └── reviews.js
+│   ├── scripts
+│   │   └── seed.js
+│   ├── server.js
+│   └── utils
+│       └── validation.js
+└── frontend
+    ├── README.md
+    ├── dist
+    │   ├── assets
+    │   │   ├── index-CUqkYXt-.js
+    │   │   └── index-DVf6Kqmn.css
+    │   ├── index.html
+    │   └── vite.svg
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── public
+    │   └── vite.svg
+    ├── src
+    │   ├── App.css
+    │   ├── App.jsx
+    │   ├── api
+    │   │   ├── auth.js
+    │   │   ├── books.js
+    │   │   └── reviews.js
+    │   ├── assets
+    │   │   └── react.svg
+    │   ├── components
+    │   │   ├── BookCard
+    │   │   │   ├── BookCard.css
+    │   │   │   └── BookCard.jsx
+    │   │   ├── BookForm
+    │   │   │   ├── BookForm.css
+    │   │   │   └── BookForm.jsx
+    │   │   ├── BookList
+    │   │   │   ├── BookList.css
+    │   │   │   └── BookList.jsx
+    │   │   ├── Header
+    │   │   │   ├── Header.css
+    │   │   │   └── Header.jsx
+    │   │   ├── ReviewForm
+    │   │   │   ├── ReviewForm.css
+    │   │   │   └── ReviewForm.jsx
+    │   │   └── ReviewList
+    │   │       ├── ReviewList.css
+    │   │       └── ReviewList.jsx
+    │   ├── index.css
+    │   ├── main.jsx
+    │   └── pages
+    │       ├── AddBook
+    │       │   ├── AddBook.css
+    │       │   └── AddBook.jsx
+    │       ├── BookDetails
+    │       │   ├── BookDetails.css
+    │       │   └── BookDetails.jsx
+    │       ├── Home
+    │       │   ├── Home.css
+    │       │   └── Home.jsx
+    │       ├── Login
+    │       │   ├── Login.css
+    │       │   └── Login.jsx
+    │       └── Register
+    │           ├── Register.css
+    │           └── Register.jsx
+    └── vite.config.js
 ```

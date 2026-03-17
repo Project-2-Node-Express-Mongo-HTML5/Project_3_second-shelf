@@ -1,7 +1,3 @@
-// api/books.js
-// All fetch calls to the /api/books backend endpoints.
-// Each function returns the parsed JSON response or throws on failure.
-
 const BASE = "/api/books";
 
 /**
