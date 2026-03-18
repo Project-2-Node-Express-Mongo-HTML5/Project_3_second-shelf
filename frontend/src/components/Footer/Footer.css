@@ -1,18 +1,49 @@
 .site-footer {
-  margin-top: 3rem;
-  padding: 1.5rem 2rem;
-  background-color: #1f2937;
+  background-color: #111827;
   color: #d1d5db;
+  padding: 2.5rem 0;
+  margin-top: 3rem;
 }
 
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
+.footer-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
 }
 
-.footer-sub {
-  font-size: 0.85rem;
+.footer-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
   color: #9ca3af;
-  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-text {
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.3rem;
+}
+
+.footer-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  color: #9ca3af;
+  font-size: 0.85rem;
 }

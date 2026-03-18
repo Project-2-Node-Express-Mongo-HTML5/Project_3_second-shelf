@@ -14,6 +14,7 @@ import {
 } from "../data/books.js";
 import { requireAuth } from "../middleware/auth.js";
 import { validateBook } from "../utils/validation.js";
+import { getDb } from "../config/mongo.js";
 
 const router = Router();
 
@@ -89,6 +90,40 @@ router.delete("/:id", requireAuth, async (req, res) => {
     return res.status(403).json({ error: "Forbidden" });
   await deleteBook(req.params.id);
   res.json({ message: "Book deleted" });
+});
+
+router.get("/sorted/rating", async (req, res) => {
+  try {
+    const db = getDb();
+
+    const books = await db
+      .collection("books")
+      .aggregate([
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "bookId",
+            as: "reviews",
+          },
+        },
+        {
+          $addFields: {
+            averageRating: { $avg: "$reviews.rating" },
+            reviewCount: { $size: "$reviews" },
+          },
+        },
+        {
+          $sort: { averageRating: -1 },
+        },
+      ])
+      .toArray();
+
+    res.json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch sorted books" });
+  }
 });
 
 export default router;

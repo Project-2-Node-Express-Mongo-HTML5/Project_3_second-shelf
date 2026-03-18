@@ -63,3 +63,13 @@ export async function deleteBook(id) {
   if (!res.ok) throw new Error("Failed to delete book");
   return res.json();
 }
+
+export async function fetchBooksSortedByRating() {
+  const res = await fetch("/api/books/sorted/rating");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch sorted books");
+  }
+
+  return res.json();
+}
