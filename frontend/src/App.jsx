@@ -7,6 +7,7 @@ import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx";
 import BookDetails from "./pages/BookDetails/BookDetails.jsx";
 import "./App.css";
+import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,8 +47,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/books/:id" element={<BookDetails />} />
+        <Route path="/books/:id" element={<BookDetails user={user} />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

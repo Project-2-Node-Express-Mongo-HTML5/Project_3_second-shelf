@@ -1,3 +1,4 @@
+///api/reviews.js//
 const BASE = "/api/reviews";
 
 /**
