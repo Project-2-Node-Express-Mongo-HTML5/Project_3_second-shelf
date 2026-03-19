@@ -1,7 +1,4 @@
-// api/books.js
-// All fetch calls to the /api/books backend endpoints.
-// Each function returns the parsed JSON response or throws on failure.
-
+////api/books.js//
 const BASE = "/api/books";
 
 /**
@@ -64,5 +61,15 @@ export async function updateBook(id, data) {
 export async function deleteBook(id) {
   const res = await fetch(`${BASE}/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error("Failed to delete book");
+  return res.json();
+}
+
+export async function fetchBooksSortedByRating() {
+  const res = await fetch("/api/books/sorted/rating");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch sorted books");
+  }
+
   return res.json();
 }

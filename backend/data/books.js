@@ -3,7 +3,7 @@
 // All direct MongoDB operations for books live here — routes should never
 // touch the db directly and should instead call these functions.
 
-import { getDB } from "../config/mongo.js";
+import { getDb } from "../config/mongo.js";
 import { ObjectId } from "mongodb";
 
 // The MongoDB collection name used for all book operations
@@ -14,7 +14,7 @@ const COL = "books";
  * @returns {Promise<Array>} Array of all book documents
  */
 export function getAllBooks() {
-  return getDB().collection(COL).find().toArray();
+  return getDb().collection(COL).find().toArray();
 }
 
 /**
@@ -23,7 +23,7 @@ export function getAllBooks() {
  * @returns {Promise<Object|null>} The book document, or null if not found
  */
 export function getBookById(id) {
-  return getDB()
+  return getDb()
     .collection(COL)
     .findOne({ _id: new ObjectId(id) });
 }
@@ -35,7 +35,7 @@ export function getBookById(id) {
  * @returns {Promise<InsertOneResult>} MongoDB insert result containing insertedId
  */
 export function createBook(book) {
-  return getDB()
+  return getDb()
     .collection(COL)
     .insertOne({ ...book, createdAt: new Date() });
 }
@@ -48,7 +48,7 @@ export function createBook(book) {
  * @returns {Promise<UpdateResult>} MongoDB update result
  */
 export function updateBook(id, updates) {
-  return getDB()
+  return getDb()
     .collection(COL)
     .updateOne({ _id: new ObjectId(id) }, { $set: updates });
 }
@@ -59,7 +59,7 @@ export function updateBook(id, updates) {
  * @returns {Promise<DeleteResult>} MongoDB delete result
  */
 export function deleteBook(id) {
-  return getDB()
+  return getDb()
     .collection(COL)
     .deleteOne({ _id: new ObjectId(id) });
 }

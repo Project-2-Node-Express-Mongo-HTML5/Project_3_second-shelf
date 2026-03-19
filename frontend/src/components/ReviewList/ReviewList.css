@@ -1,0 +1,62 @@
+.review-list {
+  margin-top: 2rem;
+}
+
+.review-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.review-user {
+  font-weight: 600;
+}
+
+.review-rating {
+  color: #f59e0b;
+}
+
+.review-text {
+  margin: 0.5rem 0;
+}
+
+.review-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.review-actions button {
+  padding: 0.4rem 0.7rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #2563eb;
+  color: white;
+}
+
+.review-actions button:hover {
+  background-color: #1d4ed8;
+}
+
+.delete-button {
+  background-color: #ef4444;
+}
+
+.delete-button:hover {
+  background-color: #dc2626;
+}

@@ -7,7 +7,7 @@
 // Redirects unauthenticated users with a message instead of showing the form.
 
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import PropTypes from "prop-types";
 import BookForm from "../../components/BookForm/BookForm.jsx";
 import { createBook, fetchBook, updateBook } from "../../api/books.js";
@@ -91,5 +91,8 @@ export default function AddBook({ user }) {
 }
 
 AddBook.propTypes = {
-  user: PropTypes.shape({ username: PropTypes.string, id: PropTypes.string }),
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.string,
+  }),
 };

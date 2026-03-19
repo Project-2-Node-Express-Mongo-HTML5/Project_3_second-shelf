@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // components/BookList/BookList.jsx
 // Renders the full grid of BookCard components on the Home page.
 // Handles three display states: loading, error, and the populated grid.
@@ -31,61 +30,14 @@ export default function BookList({ books, loading, error }) {
     <section className="booklist">
       {/* Render one BookCard per book in the array */}
       {books.map((book) => (
-=======
-import BookCard from "../BookCard/BookCard";
-// import { useState } from "react";
-import "./BookList.css";
-
-const dummyBooks = [
-  {
-    _id: "1",
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    price: 8.99,
-    condition: "Good",
-  },
-  {
-    _id: "2",
-    title: "1984",
-    author: "George Orwell",
-    price: 6.5,
-    condition: "Fair",
-  },
-  {
-    _id: "3",
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    price: 9.75,
-    condition: "Like New",
-  },
-  {
-    _id: "4",
-    title: "Moby Dick",
-    author: "Herman Melville",
-    price: 7.25,
-    condition: "Worn",
-  },
-];
-
-function BookList() {
-  // const [books, setBooks] = useState([]);
-
-  return (
-    <section className="book-list">
-      {dummyBooks.map((book) => (
->>>>>>> 8804c2469e0ac0d2b96aa06e113be1717223d4fd
         <BookCard key={book._id} book={book} />
       ))}
     </section>
   );
 }
 
-<<<<<<< HEAD
 BookList.propTypes = {
   books: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.string,
 };
-=======
-export default BookList;
->>>>>>> 8804c2469e0ac0d2b96aa06e113be1717223d4fd

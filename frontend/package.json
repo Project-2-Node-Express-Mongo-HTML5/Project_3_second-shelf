@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "description": "Frontend for Second-Shelf using React",
-
   "type": "module",
   "scripts": {
     "dev": "vite",

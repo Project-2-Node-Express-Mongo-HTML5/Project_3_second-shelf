@@ -7,12 +7,11 @@ import dotenv from "dotenv";
 import passport from "./config/passport.js";
 import { connectToMongo } from "./config/mongo.js";
 import authRoutes from "./routes/auth.js";
-// import booksRoutes from "./routes/books.js";
-// import reviewsRoutes from "./routes/reviews.js";
+import booksRoutes from "./routes/books.js";
+import reviewsRoutes from "./routes/reviews.js";
 
 dotenv.config();
 
-// Recreate __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -30,23 +29,20 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // set to true in production with HTTPS
+      secure: false,
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
 
-// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// API routes
 app.use("/api/auth", authRoutes);
-// app.use("/api/books", booksRoutes);
-// app.use("/api/reviews", reviewsRoutes);
+app.use("/api/books", booksRoutes);
+app.use("/api/reviews", reviewsRoutes);
 
-// Optional health check
 app.get("/api", (_req, res) => {
   res.json({ message: "Second-Shelf API is running" });
 });
@@ -80,8 +76,3 @@ async function startServer() {
 }
 
 startServer();
-
-////temp with mongodb////
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-// });
