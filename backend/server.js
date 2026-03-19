@@ -21,6 +21,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const isProduction = process.env.NODE_ENV === "production";
+
 // Session configuration
 app.use(
   session({
@@ -29,7 +31,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     },
@@ -47,15 +50,15 @@ app.get("/api", (_req, res) => {
   res.json({ message: "Second-Shelf API is running" });
 });
 
-// Serve frontend build
-app.use("/", express.static(join(__dirname, "../frontend/dist")));
+// // Serve frontend build
+// app.use("/", express.static(join(__dirname, "../frontend/dist")));
 
-// Catch-all for React Router
-app.get("*splat", (_req, res) => {
-  res.sendFile("index.html", {
-    root: join(__dirname, "../frontend/dist"),
-  });
-});
+// // Catch-all for React Router
+// app.get("*splat", (_req, res) => {
+//   res.sendFile("index.html", {
+//     root: join(__dirname, "../frontend/dist"),
+//   });
+// });
 
 // Error handler
 app.use((err, _req, res) => {
