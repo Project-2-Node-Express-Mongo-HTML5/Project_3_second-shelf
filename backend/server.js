@@ -23,20 +23,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set("trust proxy", 1);
 
-// Session configuration
-// app.use(
-//   session({
-//     secret:
-//       process.env.SESSION_SECRET || "your-secret-key-change-in-production",
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       secure: false,
-//       httpOnly: true,
-//       maxAge: 24 * 60 * 60 * 1000,
-//     },
-//   })
-// );
 app.use(
   session({
     secret:
