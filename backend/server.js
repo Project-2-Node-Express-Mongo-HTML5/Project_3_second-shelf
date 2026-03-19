@@ -21,9 +21,25 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  const allowedOrigin = process.env.FRONTEND_URL;
+
+  if (req.headers.origin === allowedOrigin) {
+    res.header("Access-Control-Allow-Origin", allowedOrigin);
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  }
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  return next();
+});
+
 const isProduction = process.env.NODE_ENV === "production";
 
-// Session configuration
 app.use(
   session({
     secret:
@@ -32,8 +48,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
       httpOnly: true,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
@@ -50,15 +66,15 @@ app.get("/api", (_req, res) => {
   res.json({ message: "Second-Shelf API is running" });
 });
 
-// // Serve frontend build
-// app.use("/", express.static(join(__dirname, "../frontend/dist")));
+// Serve frontend build
+app.use("/", express.static(join(__dirname, "../frontend/dist")));
 
-// // Catch-all for React Router
-// app.get("*splat", (_req, res) => {
-//   res.sendFile("index.html", {
-//     root: join(__dirname, "../frontend/dist"),
-//   });
-// });
+// Catch-all for React Router
+app.get("*splat", (_req, res) => {
+  res.sendFile("index.html", {
+    root: join(__dirname, "../frontend/dist"),
+  });
+});
 
 // Error handler
 app.use((err, _req, res) => {
