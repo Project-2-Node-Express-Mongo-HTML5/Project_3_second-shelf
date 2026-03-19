@@ -17,6 +17,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === "production";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,8 +38,6 @@ app.use((req, res, next) => {
 
   return next();
 });
-
-const isProduction = process.env.NODE_ENV === "production";
 
 app.use(
   session({
@@ -77,7 +76,7 @@ app.get("/api", (_req, res) => {
 // });
 
 // Error handler
-app.use((err, _req, res) => {
+app.use((err, _req, res, _next) => {
   console.error(err);
   res.status(500).json({ error: "Internal server error" });
 });
