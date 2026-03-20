@@ -11,9 +11,11 @@ import {
   createBook,
   updateBook,
   deleteBook,
+  getBooksBySellerId,
 } from "../data/books.js";
 import { requireAuth } from "../middleware/auth.js";
 import { validateBook } from "../utils/validation.js";
+import { getDb } from "../config/mongo.js";
 
 const router = Router();
 
@@ -25,6 +27,16 @@ const router = Router();
 router.get("/", async (req, res) => {
   const books = await getAllBooks();
   res.json(books);
+});
+
+router.get("/mine/listings", requireAuth, async (req, res) => {
+  try {
+    const books = await getBooksBySellerId(req.user.id);
+    res.json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch your listings" });
+  }
 });
 
 /**
@@ -52,7 +64,7 @@ router.post("/", requireAuth, async (req, res) => {
   if (err) return res.status(400).json({ error: err });
   const result = await createBook({
     ...req.body,
-    sellerId: req.user._id.toString(),
+    sellerId: req.user.id.toString(),
   });
   res.status(201).json({ insertedId: result.insertedId });
 });
@@ -68,7 +80,7 @@ router.post("/", requireAuth, async (req, res) => {
 router.put("/:id", requireAuth, async (req, res) => {
   const book = await getBookById(req.params.id);
   if (!book) return res.status(404).json({ error: "Book not found" });
-  if (book.sellerId !== req.user._id.toString())
+  if (book.sellerId !== req.user.id.toString())
     return res.status(403).json({ error: "Forbidden" });
   await updateBook(req.params.id, req.body);
   res.json({ message: "Book updated" });
@@ -85,10 +97,44 @@ router.put("/:id", requireAuth, async (req, res) => {
 router.delete("/:id", requireAuth, async (req, res) => {
   const book = await getBookById(req.params.id);
   if (!book) return res.status(404).json({ error: "Book not found" });
-  if (book.sellerId !== req.user._id.toString())
+  if (book.sellerId !== req.user.id.toString())
     return res.status(403).json({ error: "Forbidden" });
   await deleteBook(req.params.id);
   res.json({ message: "Book deleted" });
+});
+
+router.get("/sorted/rating", async (req, res) => {
+  try {
+    const db = getDb();
+
+    const books = await db
+      .collection("books")
+      .aggregate([
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "bookId",
+            as: "reviews",
+          },
+        },
+        {
+          $addFields: {
+            averageRating: { $avg: "$reviews.rating" },
+            reviewCount: { $size: "$reviews" },
+          },
+        },
+        {
+          $sort: { averageRating: -1 },
+        },
+      ])
+      .toArray();
+
+    res.json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch sorted books" });
+  }
 });
 
 export default router;

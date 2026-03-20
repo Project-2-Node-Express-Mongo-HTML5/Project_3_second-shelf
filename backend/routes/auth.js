@@ -1,69 +1,8 @@
-// ////Temp for routes
-
-// import express from "express";
-// import passport from "passport";
-
-// import { createUser, getAllUsers } from "../data/users.js";
-
-// const router = express.Router();
-
-// // register
-// router.post("/register", async (req, res) => {
-//   try {
-//     const { name, email, password } = req.body;
-
-//     const user = await createUser({ name, email, password });
-
-//     res.status(201).json({
-//       message: "User created",
-//       user: {
-//         id: user.id,
-//         name: user.name,
-//         email: user.email,
-//       },
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to register user" });
-//   }
-// });
-
-// // login
-// router.post("/login", passport.authenticate("local"), (req, res) => {
-//   res.json({
-//     message: "Login successful",
-//     user: req.user,
-//   });
-// });
-
-// // logout
-// router.post("/logout", (req, res, next) => {
-//   req.logout((err) => {
-//     if (err) return next(err);
-
-//     res.json({ message: "Logged out" });
-//   });
-// });
-
-// // current user
-// router.get("/me", (req, res) => {
-//   res.json({
-//     authenticated: req.isAuthenticated(),
-//     user: req.user || null,
-//   });
-// });
-
-// // debug
-// router.get("/users", (_req, res) => {
-//   res.json(getAllUsers());
-// });
-
-// export default router;
-
 import express from "express";
 import passport from "passport";
 import bcrypt from "bcrypt";
 import { createUser, findUserByEmail } from "../data/users.js";
+import { validateUser } from "../utils/validation.js";
 
 const router = express.Router();
 
@@ -74,6 +13,17 @@ router.post("/register", async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({
         error: "Name, email, and password are required",
+      });
+    }
+
+    const validationError = validateUser({
+      username: name,
+      password,
+    });
+
+    if (validationError) {
+      return res.status(400).json({
+        error: validationError,
       });
     }
 

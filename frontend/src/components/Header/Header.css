@@ -1,114 +1,44 @@
-/* Header.css
-   Styles for the site-wide sticky navigation bar.
-   Sits at the top of every page above the main content area. */
-
-/* Main header bar — dark brown background, flex layout to space logo and nav */
-.header {
-  background-color: #5a3e2b;
-  color: #fff;
-  padding: 0.875rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100; /* Sits above all page content including modals' backdrops */
+.site-navbar {
+  background-color: #1f2937;
+  padding: 0.9rem 0;
 }
 
-/* Site logo text link — large and bold, white to stand out on the dark bar */
-.header__logo {
+.site-navbar .site-navbar__brand {
+  color: #ffffff !important;
   font-size: 1.4rem;
   font-weight: 700;
-  color: #fff;
   text-decoration: none;
 }
 
-/* Nav link and button group — horizontally spaced with a gap */
-.header__nav {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
+.site-navbar .site-navbar__brand:hover,
+.site-navbar .site-navbar__brand:focus {
+  color: #f9fafb !important;
 }
 
-/* Nav links use a slightly muted off-white to visually separate from the logo */
-.header__nav a {
-  color: #f0e6da;
-  font-size: 0.95rem;
-}
-
-.header__nav a:hover {
-  color: #fff;
-}
-
-/* Logged-in username display — same muted off-white as nav links */
-.header__username {
-  font-size: 0.9rem;
-  color: #f0e6da;
-}
-
-/* Log In / Log Out button — inverted colours (light background, dark text) */
-.header__btn {
-  background: #f0e6da;
-  color: #5a3e2b;
-  border: none;
-  padding: 0.4rem 0.9rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
+.site-navbar .site-navbar__link {
+  color: #f3f4f6 !important;
   font-weight: 600;
 }
 
-.header__btn:hover {
-  background: #fff;
+.site-navbar .site-navbar__link:hover,
+.site-navbar .site-navbar__link:focus {
+  color: #ffffff !important;
 }
 
-.site-header {
-  background-color: #1f2937;
-  padding: 1rem 2rem;
-}
-
-.navbar {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navbar-brand a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.4rem;
+.site-navbar .site-navbar__link.active {
+  color: #ffffff !important;
   font-weight: 700;
 }
 
-.navbar-links {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.site-navbar__welcome {
+  color: #e5e7eb;
+  font-size: 0.95rem;
 }
 
-.navbar-links a {
-  color: white;
-  text-decoration: none;
+.site-navbar__toggler {
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-.navbar-links a:hover {
-  text-decoration: underline;
-}
-
-.navbar-links button {
-  border: none;
-  background-color: #ef4444;
-  color: white;
-  padding: 0.45rem 0.8rem;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.navbar-links button:hover {
-  background-color: #dc2626;
-}
-
-.welcome-text {
-  color: #d1d5db;
+.site-navbar .navbar-toggler-icon {
+  filter: invert(1);
 }

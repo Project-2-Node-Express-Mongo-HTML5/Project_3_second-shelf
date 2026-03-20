@@ -4,7 +4,7 @@
 // Displays the title (as a link to BookDetails), author,
 // condition badge, price, and a "View" button.
 
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import PropTypes from "prop-types";
 import "./BookCard.css";
 

@@ -4,10 +4,10 @@ export async function registerUser(userData) {
   const response = await fetch(`${API_BASE}/register`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify(userData)
+    body: JSON.stringify(userData),
   });
 
   const data = await response.json();
@@ -23,10 +23,10 @@ export async function loginUser(credentials) {
   const response = await fetch(`${API_BASE}/login`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify(credentials)
+    body: JSON.stringify(credentials),
   });
 
   const data = await response.json();
@@ -41,7 +41,7 @@ export async function loginUser(credentials) {
 export async function logoutUser() {
   const response = await fetch(`${API_BASE}/logout`, {
     method: "POST",
-    credentials: "include"
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -55,7 +55,7 @@ export async function logoutUser() {
 
 export async function fetchCurrentUser() {
   const response = await fetch(`${API_BASE}/me`, {
-    credentials: "include"
+    credentials: "include",
   });
 
   const data = await response.json();

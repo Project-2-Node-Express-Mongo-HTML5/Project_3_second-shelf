@@ -1,0 +1,8 @@
+{
+  "name": "second-shelf",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install --include=dev && npm run build && cd ../backend && npm install",
+    "start": "cd backend && npm start"
+  }
+}
